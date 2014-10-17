@@ -1,0 +1,8 @@
+#   Sample DIS enumerations for a Simulation
+# kind   domain   country    category   subCat   spec   extra
+1       6       11         16       21        26        31        plane_a	  
+2	7 	12	   17	    22	      27	32        plane_b	  
+3	8 	13	   18	    23	      28	33        truck_a	  
+4	9 	14	   19	    24	      29	34        truck_b	  
+5	10	15	   20	    25	      30	35        motorcycle
+2       7       12         17       22        27        32        plane_b2  
