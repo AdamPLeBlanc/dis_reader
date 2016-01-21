@@ -4,7 +4,7 @@ import struct
 import binascii
 import unittest
 from DIS.utils import *
-from DIS.types import *
+from DIS.entitystate import *
 
 
 class DisPacketTest(unittest.TestCase):
