@@ -12,9 +12,10 @@ class Record(object):
         self._endianess = endianess
         self._fmt = None
     
-    @property
-    def _fullFmt(self):
-        return "{0}{1}".format(ENDIANESS[self._endianess],self._fmt)
+    def _getFullFmt(self,fmt=None):
+        if fmt is None:
+            fmt = self._fmt
+        return "{0}{1}".format(ENDIANESS[self._endianess],fmt)
 
     def Pack(self):
         pass
@@ -40,7 +41,7 @@ class PduStatusRecord(Record):
         if not packet:
             self._value = 0
         else:
-            self._value = struct.unpack_from(self._fullFmt,packet)[0]
+            self._value = struct.unpack_from(self._getFullFmt(),packet)[0]
     @property
     def TEI(self):  #transfered entity indicator - no difference:0,  difference:1
         return self._value & 0x01 if self.PduType in self._rules['TEI'] else None
@@ -70,7 +71,7 @@ class PduStatusRecord(Record):
         return (self._value >> 5) & 0x01 if self.PduType in self._rules['AII'] else None
 
     def Pack(self):
-        return struct.pack(self._fullFmt,self._value)
+        return struct.pack(self._getFullFmt(),self._value)
 
     def __str__(self):
         return \
@@ -97,7 +98,7 @@ class PduHeaderRecord(Record):
             self._pVersion,self._exId,self._pduType,self._pFam,self._tStamp,self._pduStat,self._totalLen = 0,0,0,0,0,0,0
         if packet:
             self.ProtocolVersion, self.ExerciseId,self.PduType,self.ProtocolFamily,self.Timestamp,self.TotalLength,self.PduStatus,self.Padding = \
-                struct.unpack_from(self._fullFmt,packet)
+                struct.unpack_from(self._getFullFmt(),packet)
 
     @property
     def ProtocolVersion(self):
@@ -149,7 +150,7 @@ class PduHeaderRecord(Record):
         self._pduStat = value
 
     def Pack(self):
-            return struct.pack(self._fullFmt,self.ProtocolVersion,self.ExerciseId, \
+            return struct.pack(self._getFullFmt(),self.ProtocolVersion,self.ExerciseId, \
                                self.PduType,self.ProtocolFamily,self.Timestamp,self.TotalLength,self._pduStat,self.Padding)
     def __str__(self):
         return \

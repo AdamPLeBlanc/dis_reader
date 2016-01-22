@@ -12,7 +12,7 @@ class ForceIdRecord(Record):
         if not packet:
             self.Value = 0
         else:
-            self.Value = struct.unpack_from(self._fullFmt,packet)[0]
+            self.Value = struct.unpack_from(self._getFullFmt(),packet)[0]
         if self.Value < 0 or self.Value > 30:
             raise ValueError
 
@@ -32,7 +32,7 @@ class VariableParameters(Record):
         if not packet:
             self.Value = 0
         else:
-            self.Value = struct.unpack_from(self._fullFmt,packet)[0]
+            self.Value = struct.unpack_from(self._getFullFmt(),packet)[0]
 
     def Pack(self):
         return struct.pack(self._fullFmt,self.Value)
@@ -50,7 +50,7 @@ class EntityIdRecord(Record):
         if not packet:
             self.SiteNum, self.AppNum, self.EntityNum = 0,0,0
         else:
-            self.SiteNum,self.AppNum,self.EntityNum = struct.unpack_from(self._fullFmt,packet)
+            self.SiteNum,self.AppNum,self.EntityNum = struct.unpack_from(self._getFullFmt(),packet)
 
     def Pack(self):
         return struct.pack(self._fullFmt,self.SiteNum,self.AppNum,self.EntityNum)
@@ -75,7 +75,7 @@ class EntityTypeRecord(Record):
             self.SimNames = None
         else:
             self.Kind,self.Domain,self.Country,self.Category,self.SubCat,self.Specific,self.Extra = \
-                struct.unpack_from(self._fullFmt,packet)
+                struct.unpack_from(self._getFullFmt(),packet)
             self.SimNames = None if not self._entitymapper else self._entitymapper.GetEntityNames([self.Kind,self.Domain,self.Country,self.Category,self.SubCat,self.Specific,self.Extra])
 
     def Pack(self):
